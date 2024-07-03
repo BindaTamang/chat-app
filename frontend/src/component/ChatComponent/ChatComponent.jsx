@@ -1,54 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import './ChatComponent.scss';
+import axios from 'axios';
+import './ChatComponent.scss'
 
-
-const ChatComponent = ({ currentRoom, username}) => {
-    // const users = [
-    //     {
-    //         id: 1,
-    //         username: 'binda Tamnag',
-    //     },
-    //     {
-    //         id: 2,
-    //         username: 'asmita Tamnag',
-    //     }
-    // ]
+const ChatComponent = ({ username }) => {
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  // Example function to fetch messages (replace with actual API call)
-  const fetchMessages = async () => {
-    try {
-      // Replace with actual API call
-      const response = await fetch('api/messages');
-      const data = await response.json();
-      setMessages(data.messages);
-      // Assuming the users data is fetched separately
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchMessages(); // Fetch messages when component mounts
+    // Fetch all users
+    axios.get('/api/users')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
+
+    // Fetch all messages
+    axios.get('/api/messages')
+      .then(response => {
+        setMessages(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching messages:', error);
+      });
   }, []);
 
   const sendMessage = async () => {
     try {
-      // Replace with actual API call to send message
-      const response = await fetch('api/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: newMessage }),
+      // Send message
+      const response = await axios.post('/api/messages', {
+        sender: username,
+        content: newMessage
       });
-      const data = await response.json();
-      // Assuming data contains the updated messages
-      setMessages([...messages, { sender: username, content: newMessage }]);
-    //   setMessages(data.messages);
-      setNewMessage(''); // Clear the input field after sending message
+      setMessages([...messages, response.data]); // Add new message to state
+      setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -57,44 +44,38 @@ const ChatComponent = ({ currentRoom, username}) => {
   return (
     <div className="chat-container">
       <div className="header">
-        <div className="username">
-          User: {username}
-        </div>
-        <div className="chat-room">
-          Chat Room: {currentRoom}
-        </div>
+        <div className="username">User: {username}</div>
+        <div className="chat-room">Chat Room: {username}'s Chat Room</div>
       </div>
-      <div className="content">
-        <div className="sidebar">
-          <div className="members">
-            {users.map((user, index) => (
-              <div key={index} className='user'>
-                <span className='user'>{user.name}</span>
-              </div>
-            ))}
-          </div>
+      <div className="sidebar">
+        <h3>Users</h3>
+        <ul>
+          {users.map(user => (
+            <li key={user._id}>{user.username}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="main">
+        <h3>Messages</h3>
+        <div className="chat">
+          {messages.map(message => (
+            <div key={message._id} className="message">
+              <span className="sender">{message.sender.username}</span>: {message.content}
+            </div>
+          ))}
         </div>
-        <div className="main">
-          <div className="chat">
-            {messages.map((message, index) => (
-              <div key={index} className="message">
-                <span className="sender">{message.sender}</span>: {message.content}
-              </div>
-            ))}
-          </div>
-          <div className="footer">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type your message..."
-            />
-            <button onClick={sendMessage}>Send</button>
-          </div>
+        <div className="footer">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+          />
+          <button onClick={sendMessage}>Send</button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ChatComponent;
