@@ -8,9 +8,6 @@ const { ApiResponse } = require('../uitls/apiResponse');
 
 
 
-
-
-
  const CreateUser = HandleAsync(async(req, res, next) => {
     let {name, email, password} = req.body;
     console.log(name, email)
