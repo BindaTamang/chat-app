@@ -103,11 +103,15 @@ const VerifyForgetToken = HandleAsync(async(req, res, next) => {
 // password rest 
 // forget password
 // verify 
-
-
+const getUsers = HandleAsync(async(req,res, next) => {
+    let user = await User.find();
+    return res.status(200).json(new ApiResponse(200, user, "users list"));
+})
 module.exports = {
-    CreateUser,
+  
     Login,
+    getUsers,
+    CreateUser,
     ResetPassword,
     ForgetPassword,
     VerifyForgetToken
