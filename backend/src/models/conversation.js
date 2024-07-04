@@ -9,6 +9,7 @@ let converstionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    participator: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     groupName: {
         type: String,
         required: function() { return this.isGroup; }
