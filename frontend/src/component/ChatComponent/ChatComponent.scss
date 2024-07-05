@@ -48,6 +48,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    h3{
+      color: black;
+    }
+    li{
+      color: rgb(239, 38, 38);
+      font-size: 20px;
+    }
 
     .members {
       display: flex;
@@ -73,7 +80,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 285px;
+    margin-left: 300px;
     // justify-content: center;
     // align-items: center;
     background-color: #ffffff;

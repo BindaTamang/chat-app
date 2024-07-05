@@ -19,7 +19,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/verify-token/:token" element={<VerifyToken />} />
         <Route path="/chat" element={<ChatComponent/>} />
-        <Route path="/Login" element={<LoginComponent />} />
+        <Route path="/" element={<LoginComponent />} />
         <Route path="/email-verification/:token" element={<EmailVerification/>}/>
       </Routes>
       <ToastContainer />
