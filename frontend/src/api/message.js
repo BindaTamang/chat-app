@@ -119,13 +119,13 @@ const API_URL = "http://localhost:8000/api/message";
 
 // Function to search or create conversation
 export const searchOrCreateConversation = async (sender, receiver) => {
+  console.log("sender receiver", sender, receiver)
   try {
-    const response = await fetch(`${API_URL}/searchOrCreate`, {
-      method: 'POST',
+    const response = await fetch(`${API_URL}/searchOrCreate/?sender=${sender}&receiver=${receiver}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ sender, receiver })
+      }
     });
 
     if (!response.ok) {

@@ -29,16 +29,17 @@ const ChatComponent = () => {
   };
 
   // Function to search or create a conversation
-  const searchOrCreateConversationHandler = async () => {
+  const searchOrCreateConversationHandler = async (selectedUserId) => {
     try {
       console.log("Searching or creating conversation...");
-      const { _id: conversationId } = await searchOrCreateConversation(
-        senderId,
-        receiverId
+      const {data} = await searchOrCreateConversation(
+        users[0]._id,
+        selectedUserId
       );
-      setConversationId(conversationId);
-      console.log("Conversation ID:", conversationId);
-      await getMessageDetailHandler(conversationId);
+      console.log(data)
+      setConversationId(data._id);
+      console.log("Conversation ID:", data._id);
+      await getMessageDetailHandler(data._id);
     } catch (error) {
       console.error("Error searching or creating conversation:", error);
       setError("Failed to initialize chat. Please try again.");
@@ -49,9 +50,9 @@ const ChatComponent = () => {
   const getMessageDetailHandler = async (conversationId) => {
     try {
       console.log("Fetching message details...");
-      const messages = await getMessageDetail(conversationId);
-      setMessages(messages);
-      console.log("Fetched messages:", messages);
+      const {data} = await getMessageDetail(conversationId);
+      setMessages(data);
+      console.log("Fetched messages:", data);
     } catch (error) {
       console.error("Error fetching message detail:", error);
       setError("Failed to fetch messages. Please try again.");
@@ -68,7 +69,7 @@ const ChatComponent = () => {
       }
 
       console.log("Sending message...");
-      await sendMessage(receiverId, senderId, newMessage, conversationId);
+      await sendMessage(receiverId, users[0]._id, newMessage, conversationId);
       console.log("Message sent successfully.");
       setNewMessage(""); // Clear the message input after sending
 
@@ -82,14 +83,18 @@ const ChatComponent = () => {
 
   // Function to handle user selection
   const handleUserSelection = async (selectedUserId) => {
-    if (!senderId) {
-      console.log("Selecting sender:", selectedUserId);
-      setSenderId(selectedUserId);
-    } else if (!receiverId) {
-      console.log("Selecting receiver:", selectedUserId);
-      setReceiverId(selectedUserId);
-      await searchOrCreateConversationHandler();
-    }
+
+    console.log("dddd",selectedUserId)
+    setReceiverId(selectedUserId);
+    await searchOrCreateConversationHandler(selectedUserId);
+    // if (!senderId) {
+    //   console.log("Selecting sender:", selectedUserId);
+    //   setSenderId(selectedUserId);
+    // } else if (!receiverId) {
+    //   console.log("Selecting receiver:", selectedUserId);
+    //   setReceiverId(selectedUserId);
+    //   await searchOrCreateConversationHandler();
+    // }
   };
 
   useEffect(() => {
@@ -122,9 +127,11 @@ const ChatComponent = () => {
       <div className="main">
         <h3>Messages</h3>
         <div className="chat">
-          {messages.map((message) => (
+          {messages.length > 0 && messages[0].conversation.map((message) => (
             <div key={message._id} className="message">
-              <span className="sender">{message.sender}</span>:{" "}
+
+            
+              <span className="sender">{message.sender.name}</span>:{" "}
               {message.content}
             </div>
           ))}

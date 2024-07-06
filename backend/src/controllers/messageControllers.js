@@ -12,11 +12,13 @@ const serachOrCreateConversation = HandleAsync(async(req, res, next) => {
 
 
     let {sender, receiver} = req.query;
+    console.log(sender, receiver)
     let conversation = await Conversation.findOne({
         isGroup:false,
-        participator:{$in:[sender, receiver]}
+        participator:{$all:[sender, receiver]}
     })
     // if exist fetch all the deatils
+    console.log(conversation)
     if(conversation){
         return res.status(200).json(new ApiResponse(200, conversation, "message is scucessfully sent"));
     }
