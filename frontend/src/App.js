@@ -9,6 +9,7 @@ import ResetPassword from "./component/ResetPassword/ResetPassword";
 import VerifyToken from "./component/ForgetPassword/VerifyToken";
 import ChatComponent from "./component/ChatComponent/ChatComponent";
 import EmailVerification from "./component/ForgetPassword/EmailVerification";
+import Lobsang from "./component/Lobsang/Lobsang";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/chat" element={<ChatComponent/>} />
         <Route path="/" element={<LoginComponent />} />
         <Route path="/email-verification/:token" element={<EmailVerification/>}/>
+        <Route path="/lobsang" element={<Lobsang/>}/>
       </Routes>
       <ToastContainer />
     </Router>

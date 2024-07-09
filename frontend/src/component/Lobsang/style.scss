@@ -1,0 +1,109 @@
+.Lobsang {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .scroll-component {
+    background-color: red;
+    border-radius: 10px;
+    width: 50%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .Circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: grey;
+      position: relative;
+
+      .small-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .icon {
+          font-size: 30px;
+        }
+      }
+    }
+
+    .ecosystem-header-icon-item {
+      cursor: pointer;
+      flex-shrink: 0;
+      height: 2.5rem;
+      opacity: calc(.3 + var(--percentage) * .7);
+      position: relative;
+      width: 2.5rem;
+      will-change: transform, opacity;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+
+      &.live {
+        transform: translateY(calc(1 * -15px));
+        opacity: 1;
+      }
+
+      .triangle-container {
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: .5rem;
+        opacity: 0;
+        position: absolute;
+        top: 100%;
+        width: -moz-max-content;
+        width: max-content;
+        will-change: opacity;
+        transition: opacity 0.3s ease;
+
+        &.live {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .card-component {
+    position: relative;
+    width: 50%;
+    overflow: hidden;
+    .cards {
+      display: grid;
+      grid-auto-flow: column;
+      overflow: hidden;
+      position: relative;
+      scroll-snap-type: start;
+      gap: 20px;
+      grid-auto-columns: 305px;
+    }
+    .ecosystem-body-card {
+      flex: 0 0 33.33%; /* Each item takes up one-third of the container width */
+      scroll-snap-align: start;
+      padding: 20px;
+      box-sizing: border-box;
+      /* Additional styling for items */
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      text-align: center;
+
+      .card {
+        width: 247px;
+        background-color: #3d424d80;
+        border-radius: 40px;
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+        justify-content: space-between;
+        transition-duration: .15s;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+      }
+    }
+  }
+}
