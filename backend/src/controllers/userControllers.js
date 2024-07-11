@@ -5,6 +5,7 @@ const {sendPasswordResetEmail} = require("../middleware/resetEmail");
 const { HandleAsync } = require('../uitls/asyncHandler');
 const {ApiError} = require('../uitls/apiError');
 const { ApiResponse } = require('../uitls/apiResponse');
+const Stripe = require("stripe")
 
 
 
@@ -107,6 +108,41 @@ const getUsers = HandleAsync(async(req,res, next) => {
     let user = await User.find();
     return res.status(200).json(new ApiResponse(200, user, "users list"));
 })
+
+const createStripeSession = HandleAsync(async(req, res, next) => {
+    const { email, amount, currency, paymentMethodType } = req.body;
+    console.log("amount",amount,currency)
+    if (process.env.STRIPE_SECRET_KEY) {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2023-08-16",
+        typescript: true,
+      });
+  
+      try {
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency,
+        });
+        console.log("k ho ", paymentIntent)
+        const payment_id = paymentIntent.id;
+        
+        return res.status(200).json({
+            client_secret: paymentIntent.client_secret,
+          });
+       
+      } catch (e) {
+        res.status(500);
+        console.log(e);
+        return {
+          message: e.message,
+        };
+      }
+    }
+  
+    return {
+      message: "Please add stripe api key",
+    };
+})
 module.exports = {
   
     Login,
@@ -114,6 +150,7 @@ module.exports = {
     CreateUser,
     ResetPassword,
     ForgetPassword,
-    VerifyForgetToken
+    VerifyForgetToken,
+    createStripeSession
 }
 

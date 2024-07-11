@@ -8,8 +8,7 @@ import moodymadness from '../../logos/moodymadness.svg';
 import zkmarkets from '../../logos/zkmarkets.svg';
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
 import { TiArrowSortedDown } from "react-icons/ti";
-import CardCarousel from '../card/Card';
-
+import Payment from '../Payment/Payment';
 export default function Lobsang() {
   const logos = [
     { logo: clave },
@@ -50,21 +49,29 @@ export default function Lobsang() {
       delay += 100;
     });
 
+    console.log(steps, steps.length, steps[steps.length-1][0],  cardRefs.current[steps[steps.length-1][0]])
+
     if (index <= 2) {
       setMovingIndex(0);
+      if (cardRefs.current[index]) {
+        cardRefs.current[0].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      }
     } else {
       setMovingIndex(index);
+      if (cardRefs.current[index] && steps.length>=1) {
+        console.log("haello")
+        cardRefs.current[steps[steps.length-1][0]].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      }
     }
-    console.log("cardfed", cardRefs.current[index])
-    if (cardRefs.current[index]) {
-      cardRefs.current[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }
+
+   
   };
 
   return (
     <div className='Lobsang'>
       <h1>Powering the world's largest ZK network</h1>
       <h1>Explore the ZKsync Ecosystem</h1>
+      <Payment></Payment>
       <div className='scroll-component'>
         <div className='Circle'>
           <div className='small-circle'>
@@ -99,7 +106,9 @@ export default function Lobsang() {
             <div
               key={index}
               className={`ecosystem-body-card `}
-              ref={el => cardRefs.current[index] = el}
+              ref={(el)=>{ 
+                console.log(cardRefs.current)
+                cardRefs.current[index] = el}}
             >
               <div className='card'>
                 <img src={item.logo} style={{ width: "50px" }} alt="" />
@@ -108,7 +117,10 @@ export default function Lobsang() {
           ))}
         </div>
       </div>
-      <CardCarousel />
+      {/* <CardCarousel /> */}
     </div>
   );
 }
+
+
+

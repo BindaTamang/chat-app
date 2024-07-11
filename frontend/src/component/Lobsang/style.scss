@@ -73,6 +73,7 @@
     position: relative;
     width: 50%;
     overflow: hidden;
+    margin-top: 20px;
     .cards {
       display: grid;
       grid-auto-flow: column;
@@ -106,4 +107,5 @@
       }
     }
   }
+  
 }

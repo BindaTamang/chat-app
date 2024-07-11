@@ -3,6 +3,7 @@ const UserRoute = require('./src/routes/user');
 const MessageRoute = require("./src/routes/message")
 const { connect } = require("./src/models");
 const { ErrorHandle } = require("./src/middleware/error-handling");
+require('dotenv').config();
 const cors = require('cors');
 const PORT = 8000;
 const app = express();

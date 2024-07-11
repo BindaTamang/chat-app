@@ -1,5 +1,5 @@
 const express = require('express');
-const { CreateUser, Login , ForgetPassword, ResetPassword, VerifyForgetToken, getUsers} = require('../controllers/userControllers');
+const { CreateUser, Login , ForgetPassword, ResetPassword, VerifyForgetToken, getUsers, createStripeSession} = require('../controllers/userControllers');
 
 
 
@@ -10,7 +10,7 @@ route.post("/register", CreateUser);
 route.post("/forget-password", ForgetPassword)
 route.post("/reset-password", ResetPassword)
 route.post("/verify-token", VerifyForgetToken)
-
+route.post("/create-checkout-session", createStripeSession)
 
 module.exports = route
 

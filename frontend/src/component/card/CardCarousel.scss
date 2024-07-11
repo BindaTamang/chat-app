@@ -1,3 +1,21 @@
+.example {
+  background-color: red;
+  width: 500px;
+  padding: 10px;
+  overflow: auto; /* Allow scrolling within the example div */
+
+  .example-card {
+    height: 1000px; /* Height to demonstrate scrolling */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center children vertically */
+    align-items: center; /* Center children horizontally */
+  }
+
+  button {
+    margin: 10px;
+  }
+}
 .scroll-container {
   display: flex;
   overflow-x: scroll;
